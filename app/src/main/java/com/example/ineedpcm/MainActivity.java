@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mAudioRecord.startRecording();
                 isRecording = true;
                 recordThread.start();
+                btnRecord.setEnabled(false);
+                btnStop.setEnabled(true);
                 break;
 
             case R.id.btn_stop:
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 recordThread = null;
                 mAudioRecord.stop();
                 mAudioRecord.release();
+                btnStop.setEnabled(false);
+                btnRecord.setEnabled(true);
 
                 break;
         }
@@ -69,13 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void run() {
             File outputFile = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "vocal.pcm");
-            if(!outputFile.exists()) {
-                try {
-                    outputFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             FileOutputStream fileOutputStream = null;
             try {
                 fileOutputStream = new FileOutputStream(outputFile);
